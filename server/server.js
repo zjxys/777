@@ -12,14 +12,14 @@ app.use(express.json({ limit: '1mb' }));
 // 静态文件服务（前端页面）
 app.use(express.static(path.join(__dirname, '..')));
 
-// ===== 豆包 API 调用 =====
-async function callDoubaoAPI(messages) {
-  const apiKey = process.env.DOUBAO_API_KEY;
-  const model = process.env.DOUBAO_MODEL || 'doubao-seed-1-6-250615';
-  const baseUrl = process.env.DOUBAO_BASE_URL || 'https://ark.cn-beijing.volces.com/api/v3';
+// ===== DeepSeek API 调用 =====
+async function callDeepSeekAPI(messages) {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const model = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
+  const baseUrl = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com';
 
   if (!apiKey || apiKey === 'your_api_key_here') {
-    throw new Error('请先在 .env 文件中配置 DOUBAO_API_KEY');
+    throw new Error('请先在 .env 文件中配置 DEEPSEEK_API_KEY');
   }
 
   const response = await fetch(`${baseUrl}/chat/completions`, {
@@ -100,7 +100,7 @@ ${content}
 
 请按照高考评分标准进行批改，并以JSON格式返回结果。`;
 
-    const result = await callDoubaoAPI([
+    const result = await callDeepSeekAPI([
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: userPrompt }
     ]);
@@ -146,7 +146,7 @@ ${content}
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
-    hasApiKey: !!process.env.DOUBAO_API_KEY && process.env.DOUBAO_API_KEY !== 'your_api_key_here'
+    hasApiKey: !!process.env.DEEPSEEK_API_KEY && process.env.DEEPSEEK_API_KEY !== 'your_api_key_here'
   });
 });
 
