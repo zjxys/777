@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "buildCommand": "echo 'Build completed'",
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/grade", "destination": "/api/grade.js" },
+    { "source": "/api/health", "destination": "/api/health.js" }
+  ]
+}
