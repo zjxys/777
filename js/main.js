@@ -278,13 +278,17 @@ function initGradingForm() {
   const loadingOverlay = document.getElementById('loadingOverlay');
   const resultPlaceholder = document.getElementById('resultPlaceholder');
   const resultContent = document.getElementById('resultContent');
+  const loadingText = document.querySelector('.loading-text');
 
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const content = document.getElementById('essayContent').value;
       const title = document.getElementById('essayTitle').value;
+      const topic = document.getElementById('essayTopic') ? document.getElementById('essayTopic').value : '';
+      const categorySelect = document.getElementById('essayCategory');
+      const category = categorySelect ? categorySelect.options[categorySelect.selectedIndex].text : '议论文';
       
       if (!content || content.length < 100) {
         alert('请输入完整的作文内容（至少100字）');
@@ -295,13 +299,33 @@ function initGradingForm() {
       loadingOverlay.classList.add('active');
       resultPlaceholder.style.display = 'none';
       resultContent.style.display = 'none';
+      if (loadingText) loadingText.textContent = 'AI正在认真批改中...';
 
-      // 模拟批改过程
-      setTimeout(() => {
+      try {
+        // 调用后端API
+        const response = await fetch('/api/grade', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, content, topic, category })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          displayResult(data.data);
+        } else {
+          throw new Error(data.error || '批改失败');
+        }
+      } catch (error) {
+        console.warn('API调用失败，使用本地模拟:', error.message);
+        // 降级：使用本地模拟
+        if (loadingText) loadingText.textContent = '使用本地模拟批改...';
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const result = generateMockResult(title, content);
         displayResult(result);
+      } finally {
         loadingOverlay.classList.remove('active');
-      }, 2000);
+      }
     });
   }
 }
