@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>范文库 - 笔韵 AI高考语文作文批改平台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">笔</div>
+        <span>笔韵</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="grading.html">作文批改</a>
+        <a href="library.html" class="active">范文库</a>
+        <a href="tips.html">写作技巧</a>
+        <a href="profile.html">个人中心</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-outline">登录</button>
+        <button class="btn btn-primary">免费注册</button>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <!-- 页面标题 -->
+  <section class="page-header">
+    <div class="container">
+      <h1>高分范文库</h1>
+      <p>精选历年高考满分作文，附名师点评，助你学习借鉴快速提升</p>
+      <div class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span>/</span>
+        <span>范文库</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 范文列表 -->
+  <section class="library-section">
+    <div class="container">
+      <!-- 筛选栏 -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>年份：</label>
+          <select id="yearFilter" class="filter-select">
+            <option value="all">全部年份</option>
+            <option value="2024">2024年</option>
+            <option value="2023">2023年</option>
+            <option value="2022">2022年</option>
+            <option value="2021">2021年</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>文体：</label>
+          <select id="categoryFilter" class="filter-select">
+            <option value="all">全部文体</option>
+            <option value="议论文">议论文</option>
+            <option value="记叙文">记叙文</option>
+            <option value="散文">散文</option>
+          </select>
+        </div>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="搜索作文标题、关键词...">
+        </div>
+      </div>
+
+      <!-- 范文卡片网格 -->
+      <div class="essays-grid" id="essaysGrid">
+        <!-- 由JS动态渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 范文详情弹窗 -->
+  <div class="modal-overlay" id="essayModal">
+    <div class="modal-content">
+      <button class="modal-close">✕</button>
+      <div class="modal-header">
+        <div class="essay-year">2024年全国甲卷</div>
+        <h1 class="essay-title">以技术之翼，驭人文之舟</h1>
+        <div style="display: flex; gap: 16px; margin-top: 12px;">
+          <span class="score-badge">58分</span>
+          <span style="opacity: 0.9; font-size: 14px;">📄 议论文</span>
+          <span style="opacity: 0.9; font-size: 14px;">📝 1080字</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="essay-full-text">
+          <p>随着人工智能的飞速发展，技术与人文的关系愈发引人深思。有人担忧技术会消解人文的温度，也有人坚信技术能为人文插上翅膀。在我看来，技术与人文并非对立的两极，而是相辅相成的双翼，唯有以技术之翼驭人文之舟，方能驶向更加美好的未来。</p>
+          <p>技术是人文发展的催化剂，为人文的传播与传承开辟了新的可能。曾几何时，知识被禁锢在象牙塔中，寻常百姓难以触及。而印刷术的发明，让书籍走入千家万户；互联网的普及，让信息实现了全球共享。如今，数字故宫让千年文明在指尖流淌，线上课堂让山区孩子也能聆听名师教诲。技术打破了时空的壁垒，让人文的光芒照亮了更多角落。</p>
+          <p>然而，技术的快速发展也带来了新的挑战。算法推荐塑造的"信息茧房"，让人们的视野日益狭隘；碎片化阅读的盛行，让深度思考变得稀缺。当我们习惯于用表情包代替言语，用短视频代替阅读，人文的厚度是否正在被消解？答案是否定的。技术只是工具，关键在于使用工具的人。正如笔可以书写华章，也可以涂抹涂鸦，技术的价值最终取决于人的选择。</p>
+          <p>真正的智慧，是在技术的浪潮中守住人文的根基。钱学森先生不仅是伟大的科学家，更是深谙艺术之道的学者，他曾说："艺术上的修养不仅加深了我对艺术作品中那些诗情画意和人生哲理的深刻理解，也让我学会了艺术上大跨度的宏观形象思维。"正是人文的滋养，让他在科学的道路上走得更远。同样，人文工作者也应积极拥抱技术，用新的载体传递古老的智慧。</p>
+          <p>站在时代的十字路口，我们既要仰望技术的星空，也要脚踏人文的大地。让技术的理性与人文的温情交融，让创新的动力与传承的坚守并行。唯有如此，我们才能在飞速发展的时代中不迷失方向，让文明的薪火代代相传。</p>
+        </div>
+        <div class="teacher-comment">
+          <h4>👨‍🏫 名师点评</h4>
+          <p>本文立意深刻，论证层层递进。开篇点明中心论点，接着从正反两方面展开论述，最后提出解决之道。论据丰富，既有历史事实，也有现实案例，还有名人名言，增强了文章的说服力。语言优美，富有文采，是一篇优秀的考场作文。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">笔</div>
+            <span>笔韵</span>
+          </div>
+          <p>专业的AI高考语文作文批改平台<br>助力每一位学子金榜题名</p>
+          <div class="footer-social">
+            <a href="#">💬</a>
+            <a href="#">📱</a>
+            <a href="#">📧</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品功能</h4>
+          <ul>
+            <li><a href="grading.html">作文批改</a></li>
+            <li><a href="library.html">范文库</a></li>
+            <li><a href="tips.html">写作技巧</a></li>
+            <li><a href="profile.html">学习记录</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于我们</h4>
+          <ul>
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">团队成员</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">加入我们</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>帮助支持</h4>
+          <ul>
+            <li><a href="#">使用指南</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">意见反馈</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 笔韵作文 版权所有 | 让写作更有力量</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

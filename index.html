@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>笔韵 - AI高考语文作文批改平台</title>
+  <meta name="description" content="专业的AI高考语文作文批改平台，智能评分、精准诊断、个性化建议，助你作文提分。">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">笔</div>
+        <span>笔韵</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="active">首页</a>
+        <a href="grading.html">作文批改</a>
+        <a href="library.html">范文库</a>
+        <a href="tips.html">写作技巧</a>
+        <a href="profile.html">个人中心</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-outline">登录</button>
+        <button class="btn btn-primary">免费注册</button>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <!-- 英雄区 -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>AI智能批改<br>让<span>高考作文</span>提分更简单</h1>
+        <p>基于深度学习的智能作文批改系统，从内容、表达、发展等级三个维度全面分析，
+        精准定位问题，给出个性化提升建议，让每一篇作文都有进步的空间。</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-lg" onclick="window.location.href='grading.html'">立即批改作文</button>
+          <button class="btn btn-outline btn-lg" onclick="window.location.href='library.html'">浏览范文库</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>50万+</h3>
+            <p>累计批改作文</p>
+          </div>
+          <div class="stat-item">
+            <h3>98%</h3>
+            <p>用户满意度</p>
+          </div>
+          <div class="stat-item">
+            <h3>10秒</h3>
+            <p>快速出分</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-card-title">📊 作文评分报告</div>
+            <div class="score-badge">54分</div>
+          </div>
+          <div class="hero-card-body">
+            <div class="score-item">
+              <div class="score-item-label">内容</div>
+              <div class="score-item-value">18/20</div>
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="score-item">
+              <div class="score-item-label">表达</div>
+              <div class="score-item-value">17/20</div>
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="score-item">
+              <div class="score-item-label">发展等级</div>
+              <div class="score-item-value">19/20</div>
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 95%"></div>
+              </div>
+            </div>
+            <div class="score-item">
+              <div class="score-item-label">综合评价</div>
+              <div class="score-item-value">一类文</div>
+              <div class="score-bar">
+                <div class="score-bar-fill" style="width: 90%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card-float hero-card-float-1">
+          <div class="float-icon green">✓</div>
+          <div class="float-text">
+            <p>批改完成</p>
+            <strong>用时 8.6 秒</strong>
+          </div>
+        </div>
+        <div class="hero-card-float hero-card-float-2">
+          <div class="float-icon gold">💡</div>
+          <div class="float-text">
+            <p>智能建议</p>
+            <strong>3 条提升建议</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 特色功能 -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">核心功能</span>
+        <h2>为什么选择笔韵？</h2>
+        <p>四大核心能力，全方位助力高考作文备考</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon red">🤖</div>
+          <h3>AI智能批改</h3>
+          <p>基于数十万篇高考满分作文训练的AI模型，从内容、表达、发展等级三个维度全面评分，
+          准确率接近资深阅卷老师，让你随时了解自己的作文水平。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon blue">📝</div>
+          <h3>详细诊断分析</h3>
+          <p>不只是给分数，更有详细的诊断报告。指出优点和不足，分析审题、结构、语言等方面的问题，
+          让你清楚知道自己的短板在哪里。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon gold">💡</div>
+          <h3>个性化提升建议</h3>
+          <p>根据你的作文情况，量身定制提升方案。推荐相关范文和写作技巧，
+          针对薄弱环节给出具体的改进建议，让每一次练习都有收获。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon blue">📚</div>
+          <h3>海量范文库</h3>
+          <p>精选历年高考满分作文、优秀模拟题范文，按主题、文体、年份分类，
+          附名师点评和赏析，帮助你学习借鉴，快速提升写作水平。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green">📈</div>
+          <h3>学习进度追踪</h3>
+          <p>记录每一次批改，生成个人成长档案。查看历史成绩曲线，
+          追踪进步轨迹，让你清晰看到自己的成长和提升。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon red">🎯</div>
+          <h3>紧贴高考考纲</h3>
+          <p>严格按照高考作文评分标准设计，完全匹配高考考纲要求。
+          题型、评分维度、评分标准都与真实高考保持一致，让练习更有针对性。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 评分维度 -->
+  <section class="dimensions">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">评分标准</span>
+        <h2>三大评分维度</h2>
+        <p>严格参照高考作文评分标准，从三个维度全面评估</p>
+      </div>
+      <div class="dimensions-grid">
+        <div class="dimension-card">
+          <div class="dimension-score">20</div>
+          <div class="dimension-label">内容等级</div>
+          <div class="dimension-desc">审题立意、中心思想、内容充实、感情真挚</div>
+        </div>
+        <div class="dimension-card">
+          <div class="dimension-score">20</div>
+          <div class="dimension-label">表达等级</div>
+          <div class="dimension-desc">文体规范、结构严谨、语言流畅、书写工整</div>
+        </div>
+        <div class="dimension-card">
+          <div class="dimension-score">20</div>
+          <div class="dimension-label">发展等级</div>
+          <div class="dimension-desc">深刻、丰富、有文采、有创意</div>
+        </div>
+        <div class="dimension-card">
+          <div class="dimension-score">60</div>
+          <div class="dimension-label">总分</div>
+          <div class="dimension-desc">综合评定，精准反映真实写作水平</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA区域 -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>准备好提升你的作文水平了吗？</h2>
+      <p>立即体验AI智能批改，让每一篇作文都成为进步的阶梯</p>
+      <button class="btn btn-white btn-lg" onclick="window.location.href='grading.html'">免费开始批改</button>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">笔</div>
+            <span>笔韵</span>
+          </div>
+          <p>专业的AI高考语文作文批改平台<br>助力每一位学子金榜题名</p>
+          <div class="footer-social">
+            <a href="#" title="微信">💬</a>
+            <a href="#" title="微博">📱</a>
+            <a href="#" title="邮箱">📧</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品功能</h4>
+          <ul>
+            <li><a href="grading.html">作文批改</a></li>
+            <li><a href="library.html">范文库</a></li>
+            <li><a href="tips.html">写作技巧</a></li>
+            <li><a href="profile.html">学习记录</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于我们</h4>
+          <ul>
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">团队成员</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">加入我们</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>帮助支持</h4>
+          <ul>
+            <li><a href="#">使用指南</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">意见反馈</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 笔韵作文 版权所有 | 让写作更有力量</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

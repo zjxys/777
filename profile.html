@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人中心 - 笔韵 AI高考语文作文批改平台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">笔</div>
+        <span>笔韵</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="grading.html">作文批改</a>
+        <a href="library.html">范文库</a>
+        <a href="tips.html">写作技巧</a>
+        <a href="profile.html" class="active">个人中心</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-outline">登录</button>
+        <button class="btn btn-primary">免费注册</button>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <!-- 页面标题 -->
+  <section class="page-header">
+    <div class="container">
+      <h1>个人中心</h1>
+      <p>查看你的学习记录和成长轨迹</p>
+      <div class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span>/</span>
+        <span>个人中心</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 用户中心主体 -->
+  <section class="profile-section">
+    <div class="container">
+      <div class="profile-container">
+        <!-- 左侧边栏 -->
+        <div class="profile-sidebar">
+          <div class="profile-info">
+            <div class="profile-avatar">张</div>
+            <div class="profile-name">张同学</div>
+            <div class="profile-email">zhang@example.com</div>
+            <div class="profile-level">⭐ LV.5 写作达人</div>
+          </div>
+          <div class="profile-menu">
+            <div class="profile-menu-item active" data-target="panel-overview">
+              <span class="menu-icon">📊</span>
+              <span>学习概览</span>
+            </div>
+            <div class="profile-menu-item" data-target="panel-history">
+              <span class="menu-icon">📝</span>
+              <span>批改记录</span>
+            </div>
+            <div class="profile-menu-item" data-target="panel-collection">
+              <span class="menu-icon">⭐</span>
+              <span>我的收藏</span>
+            </div>
+            <div class="profile-menu-item" data-target="panel-settings">
+              <span class="menu-icon">⚙️</span>
+              <span>账号设置</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧内容区 -->
+        <div class="profile-content">
+          <!-- 学习概览 -->
+          <div class="profile-panel active" id="panel-overview">
+            <div class="panel-card">
+              <h2>学习概览</h2>
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-value">12</div>
+                  <div class="stat-label">累计批改</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value">48.6</div>
+                  <div class="stat-label">平均分数</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value">+6.2</div>
+                  <div class="stat-label">进步分数</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value">28</div>
+                  <div class="stat-label">收藏范文</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <h2>最近批改</h2>
+              <div class="history-list" id="historyList">
+                <!-- 由JS动态渲染 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 批改记录 -->
+          <div class="profile-panel" id="panel-history">
+            <div class="panel-card">
+              <h2>全部批改记录</h2>
+              <div class="history-list" id="historyListFull">
+                <!-- 复用同样的样式 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 我的收藏 -->
+          <div class="profile-panel" id="panel-collection">
+            <div class="panel-card">
+              <h2>我的收藏</h2>
+              <div class="essays-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="essay-card">
+                  <div class="essay-card-header">
+                    <div class="essay-year">2024年全国甲卷</div>
+                    <div class="essay-title">以技术之翼，驭人文之舟</div>
+                  </div>
+                  <div class="essay-card-body">
+                    <div class="essay-meta">
+                      <div class="essay-meta-item">📄 议论文</div>
+                      <div class="essay-meta-item">📝 1080字</div>
+                    </div>
+                    <div class="essay-score-badge">⭐ 58分</div>
+                    <p class="essay-preview">随着人工智能的飞速发展，技术与人文的关系愈发引人深思...</p>
+                    <div class="essay-card-footer">
+                      <div class="essay-tags">
+                        <span class="tag">技术与人文</span>
+                        <span class="tag">思辨</span>
+                      </div>
+                      <span class="read-more">阅读全文 →</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="essay-card">
+                  <div class="essay-card-header">
+                    <div class="essay-year">2023年新高考I卷</div>
+                    <div class="essay-title">故事的力量</div>
+                  </div>
+                  <div class="essay-card-body">
+                    <div class="essay-meta">
+                      <div class="essay-meta-item">📄 议论文</div>
+                      <div class="essay-meta-item">📝 1120字</div>
+                    </div>
+                    <div class="essay-score-badge">⭐ 59分</div>
+                    <p class="essay-preview">好的故事，可以帮我们更好地表达和沟通，可以触动心灵...</p>
+                    <div class="essay-card-footer">
+                      <div class="essay-tags">
+                        <span class="tag">故事的力量</span>
+                        <span class="tag">文化传承</span>
+                      </div>
+                      <span class="read-more">阅读全文 →</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 账号设置 -->
+          <div class="profile-panel" id="panel-settings">
+            <div class="panel-card">
+              <h2>账号设置</h2>
+              <form class="settings-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" class="form-input" value="张同学">
+                  </div>
+                  <div class="form-group">
+                    <label>昵称</label>
+                    <input type="text" class="form-input" value="文学少年">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>邮箱</label>
+                  <input type="email" class="form-input" value="zhang@example.com">
+                </div>
+                <div class="form-group">
+                  <label>年级</label>
+                  <select class="form-select">
+                    <option>高一</option>
+                    <option>高二</option>
+                    <option selected>高三</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>目标分数</label>
+                  <select class="form-select">
+                    <option>45分以上</option>
+                    <option>50分以上</option>
+                    <option selected>55分以上</option>
+                    <option>满分冲刺</option>
+                  </select>
+                </div>
+                <button type="button" class="btn btn-primary">保存修改</button>
+              </form>
+            </div>
+
+            <div class="panel-card">
+              <h2>修改密码</h2>
+              <form class="settings-form">
+                <div class="form-group">
+                  <label>当前密码</label>
+                  <input type="password" class="form-input" placeholder="请输入当前密码">
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>新密码</label>
+                    <input type="password" class="form-input" placeholder="请输入新密码">
+                  </div>
+                  <div class="form-group">
+                    <label>确认新密码</label>
+                    <input type="password" class="form-input" placeholder="请再次输入新密码">
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary">修改密码</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">笔</div>
+            <span>笔韵</span>
+          </div>
+          <p>专业的AI高考语文作文批改平台<br>助力每一位学子金榜题名</p>
+          <div class="footer-social">
+            <a href="#">💬</a>
+            <a href="#">📱</a>
+            <a href="#">📧</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品功能</h4>
+          <ul>
+            <li><a href="grading.html">作文批改</a></li>
+            <li><a href="library.html">范文库</a></li>
+            <li><a href="tips.html">写作技巧</a></li>
+            <li><a href="profile.html">学习记录</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于我们</h4>
+          <ul>
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">团队成员</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">加入我们</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>帮助支持</h4>
+          <ul>
+            <li><a href="#">使用指南</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">意见反馈</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 笔韵作文 版权所有 | 让写作更有力量</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // 补充渲染全部历史记录
+    document.addEventListener('DOMContentLoaded', function() {
+      const historyFull = document.getElementById('historyListFull');
+      if (historyFull) {
+        const allHistory = [
+          { day: '20', month: '9月', title: '谈担当', category: '议论文', wordCount: 986, score: 48, totalScore: 60 },
+          { day: '15', month: '9月', title: '我的青春之歌', category: '记叙文', wordCount: 1024, score: 52, totalScore: 60 },
+          { day: '10', month: '9月', title: '科技与人文', category: '议论文', wordCount: 956, score: 45, totalScore: 60 },
+          { day: '05', month: '9月', title: '那一刻，我长大了', category: '记叙文', wordCount: 1100, score: 50, totalScore: 60 },
+          { day: '28', month: '8月', title: '论坚持', category: '议论文', wordCount: 890, score: 46, totalScore: 60 },
+          { day: '20', month: '8月', title: '家乡的四季', category: '散文', wordCount: 920, score: 47, totalScore: 60 }
+        ];
+        historyFull.innerHTML = allHistory.map(item => `
+          <div class="history-item">
+            <div class="history-date">
+              <div class="day">${item.day}</div>
+              <div class="month">${item.month}</div>
+            </div>
+            <div class="history-info">
+              <div class="history-title">${item.title}</div>
+              <div class="history-meta">
+                <span>📄 ${item.category}</span>
+                <span>📝 ${item.wordCount}字</span>
+              </div>
+            </div>
+            <div class="history-score">
+              <div class="score-num">${item.score}<span style="font-size:14px;color:#999">/${item.totalScore}</span></div>
+              <div class="score-label">作文得分</div>
+            </div>
+            <div class="history-action">查看详情 →</div>
+          </div>
+        `).join('');
+      }
+    });
+  </script>
+</body>
+</html>

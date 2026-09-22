@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作文批改 - 笔韵 AI高考语文作文批改平台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">笔</div>
+        <span>笔韵</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="grading.html" class="active">作文批改</a>
+        <a href="library.html">范文库</a>
+        <a href="tips.html">写作技巧</a>
+        <a href="profile.html">个人中心</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-outline">登录</button>
+        <button class="btn btn-primary">免费注册</button>
+      </div>
+      <button class="mobile-menu-btn">☰</button>
+    </div>
+  </nav>
+
+  <!-- 页面标题 -->
+  <section class="page-header">
+    <div class="container">
+      <h1>AI作文批改</h1>
+      <p>粘贴你的作文，AI将在10秒内为你生成详细的评分报告</p>
+      <div class="breadcrumb">
+        <a href="index.html">首页</a>
+        <span>/</span>
+        <span>作文批改</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 批改主体 -->
+  <section class="grading-section">
+    <div class="container">
+      <div class="grading-container">
+        <!-- 左侧：提交表单 -->
+        <div class="grading-form-card">
+          <form id="gradingForm">
+            <div class="form-group">
+              <label for="essayTitle">作文标题<span class="required">*</span></label>
+              <input type="text" id="essayTitle" class="form-input" placeholder="请输入作文标题">
+            </div>
+            
+            <div class="form-group">
+              <label for="essayCategory">作文类型</label>
+              <select id="essayCategory" class="form-select">
+                <option value="argumentative">议论文</option>
+                <option value="narrative">记叙文</option>
+                <option value="prose">散文</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="essayTopic">作文题目/材料</label>
+              <textarea id="essayTopic" class="form-textarea" rows="3" placeholder="可选：填写作文题目或材料，帮助AI更准确地评分"></textarea>
+              <div class="topic-hint">
+                💡 提示：填写作文题目或材料可以让批改更准确。如果是命题作文或材料作文，建议填写。
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="essayContent">作文内容<span class="required">*</span></label>
+              <textarea id="essayContent" class="form-textarea" placeholder="请在此粘贴或输入你的作文内容...&#10;&#10;建议字数：800-1000字（高考标准）"></textarea>
+              <div class="char-count" id="charCount">0 字</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg submit-btn">
+              ✨ 开始智能批改
+            </button>
+          </form>
+        </div>
+
+        <!-- 右侧：批改结果 -->
+        <div class="result-card" style="position: relative;">
+          <!-- 加载动画 -->
+          <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">AI正在认真批改中...</div>
+          </div>
+
+          <!-- 占位提示 -->
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="result-placeholder-icon">📝</div>
+            <p>在左侧输入你的作文<br>点击"开始智能批改"查看详细评分报告</p>
+          </div>
+
+          <!-- 批改结果 -->
+          <div id="resultContent" style="display: none;">
+            <div class="result-score-section">
+              <div class="total-score"><span id="totalScore">0</span><span id="totalMax">/60</span></div>
+              <div class="score-level" id="scoreLevel">一类文</div>
+            </div>
+
+            <div class="result-section">
+              <h3>各维度得分</h3>
+              <div class="dimension-scores">
+                <div class="dim-score-item">
+                  <div class="dim-score-header">
+                    <span class="dim-score-label">内容</span>
+                    <span class="dim-score-value">18/20</span>
+                  </div>
+                  <div class="score-bar">
+                    <div class="score-bar-fill" style="width: 90%"></div>
+                  </div>
+                </div>
+                <div class="dim-score-item">
+                  <div class="dim-score-header">
+                    <span class="dim-score-label">表达</span>
+                    <span class="dim-score-value">17/20</span>
+                  </div>
+                  <div class="score-bar">
+                    <div class="score-bar-fill" style="width: 85%"></div>
+                  </div>
+                </div>
+                <div class="dim-score-item">
+                  <div class="dim-score-header">
+                    <span class="dim-score-label">发展等级</span>
+                    <span class="dim-score-value">19/20</span>
+                  </div>
+                  <div class="score-bar">
+                    <div class="score-bar-fill" style="width: 95%"></div>
+                  </div>
+                </div>
+                <div class="dim-score-item">
+                  <div class="dim-score-header">
+                    <span class="dim-score-label">书写规范</span>
+                    <span class="dim-score-value">--</span>
+                  </div>
+                  <div class="score-bar">
+                    <div class="score-bar-fill" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-section">
+              <h3>总评</h3>
+              <div class="comment-text" id="commentText">
+                文章立意明确，结构完整，语言通顺。建议在论据的新颖性和论证的深度上再下功夫，可以多引用一些时事素材，增强文章的时代感。
+              </div>
+            </div>
+
+            <div class="result-section">
+              <h3>提升建议</h3>
+              <ul class="suggestion-list" id="suggestionList">
+                <li>
+                  <span class="suggestion-icon">✓</span>
+                  <span>加强审题训练，确保立意准确、深刻</span>
+                </li>
+                <li>
+                  <span class="suggestion-icon">✓</span>
+                  <span>积累更多素材，尤其是时事热点素材</span>
+                </li>
+                <li>
+                  <span class="suggestion-icon">✓</span>
+                  <span>注意段落之间的过渡，使文章更连贯</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div class="logo-icon">笔</div>
+            <span>笔韵</span>
+          </div>
+          <p>专业的AI高考语文作文批改平台<br>助力每一位学子金榜题名</p>
+          <div class="footer-social">
+            <a href="#">💬</a>
+            <a href="#">📱</a>
+            <a href="#">📧</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>产品功能</h4>
+          <ul>
+            <li><a href="grading.html">作文批改</a></li>
+            <li><a href="library.html">范文库</a></li>
+            <li><a href="tips.html">写作技巧</a></li>
+            <li><a href="profile.html">学习记录</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于我们</h4>
+          <ul>
+            <li><a href="#">公司介绍</a></li>
+            <li><a href="#">团队成员</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">加入我们</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>帮助支持</h4>
+          <ul>
+            <li><a href="#">使用指南</a></li>
+            <li><a href="#">常见问题</a></li>
+            <li><a href="#">意见反馈</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 笔韵作文 版权所有 | 让写作更有力量</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
