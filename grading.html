@@ -42,6 +42,22 @@
     </div>
   </section>
 
+  <!-- API Key 配置 -->
+  <section class="api-key-section" style="background:#fff;border-bottom:1px solid var(--border);padding:16px 0;">
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <label style="font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;">API Key：</label>
+        <input type="password" id="apiKeyInput" class="form-input" placeholder="输入硅基流动 API Key（sk-开头）" style="flex:1;min-width:200px;">
+        <button type="button" class="btn btn-primary btn-sm" id="saveApiKeyBtn">保存</button>
+        <span id="apiKeyStatus" style="font-size:13px;color:var(--text-muted);"></span>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">
+        API Key 保存在浏览器本地，不会上传。获取地址：
+        <a href="https://cloud.siliconflow.cn" target="_blank" style="color:var(--primary);">硅基流动</a>
+      </p>
+    </div>
+  </section>
+
   <!-- 批改主体 -->
   <section class="grading-section">
     <div class="container">

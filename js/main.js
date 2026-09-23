@@ -272,6 +272,73 @@ function initCharCount() {
   }
 }
 
+// ===== API Key 管理 =====
+const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1';
+const SILICONFLOW_MODEL = 'Qwen/Qwen2.5-7B-Instruct';
+const SILICONFLOW_VISION_MODEL = 'Qwen/Qwen2.5-VL-7B-Instruct';
+
+function getApiKey() {
+  return localStorage.getItem('siliconflow_api_key') || '';
+}
+
+function initApiKeyManager() {
+  const apiKeyInput = document.getElementById('apiKeyInput');
+  const saveBtn = document.getElementById('saveApiKeyBtn');
+  const statusEl = document.getElementById('apiKeyStatus');
+  if (!apiKeyInput || !saveBtn) return;
+
+  // 加载已保存的 Key
+  const savedKey = getApiKey();
+  if (savedKey) {
+    apiKeyInput.value = savedKey;
+    statusEl.textContent = '✓ 已配置';
+    statusEl.style.color = 'green';
+  }
+
+  saveBtn.addEventListener('click', () => {
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+      localStorage.removeItem('siliconflow_api_key');
+      statusEl.textContent = '未配置';
+      statusEl.style.color = '';
+      return;
+    }
+    localStorage.setItem('siliconflow_api_key', key);
+    statusEl.textContent = '✓ 已保存';
+    statusEl.style.color = 'green';
+  });
+}
+
+// ===== 前端直接调用硅基流动 API =====
+async function callAI(messages, isVision = false) {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    throw new Error('请先在页面上方输入并保存 API Key');
+  }
+
+  const response = await fetch(`${SILICONFLOW_BASE_URL}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: isVision ? SILICONFLOW_VISION_MODEL : SILICONFLOW_MODEL,
+      messages: messages,
+      temperature: isVision ? 0.1 : 0.7,
+      max_tokens: isVision ? 3000 : 2000
+    })
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`API调用失败(${response.status})`);
+  }
+
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
 // 图片上传 + OCR 识别
 function initImageUpload() {
   const uploadBtn = document.getElementById('uploadBtn');
@@ -285,38 +352,31 @@ function initImageUpload() {
 
   if (!uploadBtn || !imageInput) return;
 
-  // 点击上传按钮 → 触发文件选择
   uploadBtn.addEventListener('click', () => {
     imageInput.click();
   });
 
-  // 选择文件后
   imageInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // 检查文件大小（限制 10MB）
     if (file.size > 10 * 1024 * 1024) {
       alert('图片太大，请选择 10MB 以内的图片');
       imageInput.value = '';
       return;
     }
 
-    // 显示预览
     const reader = new FileReader();
     reader.onload = (event) => {
       const base64 = event.target.result;
       previewImg.src = base64;
       imagePreview.style.display = 'block';
       ocrLoading.style.display = 'flex';
-
-      // 调用 OCR API
       performOCR(base64);
     };
     reader.readAsDataURL(file);
   });
 
-  // 移除图片
   if (removeImageBtn) {
     removeImageBtn.addEventListener('click', () => {
       imagePreview.style.display = 'none';
@@ -326,36 +386,22 @@ function initImageUpload() {
     });
   }
 
-  // OCR 识别
   async function performOCR(base64Image) {
     try {
-      const response = await fetch('/api/ocr', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64Image })
-      });
+      const result = await callAI([
+        { role: 'system', content: '你是一个精准的文字识别助手。请识别图片中的手写或印刷文字，只返回识别到的纯文本内容，不要添加任何解释。保留原文的段落分隔。' },
+        { role: 'user', content: [
+          { type: 'text', text: '请识别这张图片中的所有文字，按原文逐字输出，保留段落结构。' },
+          { type: 'image_url', image_url: { url: base64Image } }
+        ]}
+      ], true);
 
-      if (!response.ok) {
-        throw new Error(`识别失败: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success && data.text) {
-        // 将识别结果填入作文内容
-        essayContent.value = data.text;
-        // 触发字数统计更新
-        const count = essayContent.value.length;
-        charCount.textContent = `${count} 字`;
-        if (count < 800) {
-          charCount.classList.add('warning');
-        } else {
-          charCount.classList.remove('warning');
-        }
-        ocrLoading.style.display = 'none';
-      } else {
-        throw new Error(data.error || '识别失败');
-      }
+      essayContent.value = result.trim();
+      const count = essayContent.value.length;
+      charCount.textContent = `${count} 字`;
+      if (count < 800) charCount.classList.add('warning');
+      else charCount.classList.remove('warning');
+      ocrLoading.style.display = 'none';
     } catch (error) {
       console.error('OCR失败:', error.message);
       ocrLoading.style.display = 'none';
@@ -363,6 +409,37 @@ function initImageUpload() {
     }
   }
 }
+
+// 作文批改系统提示词
+const SYSTEM_PROMPT = `你是一位资深的高考语文阅卷老师，有着丰富的作文批改经验。
+请严格按照高考作文评分标准（满分60分）对用户提交的作文进行批改。
+
+评分维度（共60分）：
+1. 内容等级（20分）：审题立意、中心思想、内容充实、感情真挚
+2. 表达等级（20分）：文体规范、结构严谨、语言流畅、书写工整
+3. 发展等级（20分）：深刻、丰富、有文采、有创意
+
+请严格按照以下JSON格式返回结果，不要包含任何额外文字：
+{
+  "totalScore": 总分,
+  "level": "一类文/二类上/二类下/三类文/四类文",
+  "dimensions": {
+    "content": { "score": 内容分, "max": 20, "label": "内容" },
+    "expression": { "score": 表达分, "max": 20, "label": "表达" },
+    "development": { "score": 发展等级分, "max": 20, "label": "发展等级" }
+  },
+  "comment": "总评（150字左右）",
+  "suggestions": ["建议1", "建议2", "建议3"]
+}
+
+评分参考：
+- 一类文（52-60分）：立意深刻，中心突出，内容充实，结构严谨，语言流畅有文采
+- 二类上（46-51分）：符合题意，中心明确，内容较充实，结构完整，语言通顺
+- 二类下（40-45分）：基本符合题意，中心基本明确
+- 三类文（34-39分）：偏离题意，中心不明确
+- 四类文（33分以下）：完全跑题
+
+请务必返回合法的JSON格式。`;
 
 // 作文批改
 function initGradingForm() {
@@ -394,25 +471,44 @@ function initGradingForm() {
       if (loadingText) loadingText.textContent = 'AI正在认真批改中...';
 
       try {
-        // 调用后端API
-        const response = await fetch('/api/grade', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, content, topic, category })
-        });
-
-        if (!response.ok) {
-          const errText = await response.text();
-          throw new Error(`服务器返回 ${response.status}: ${errText.substring(0, 200)}`);
+        if (!getApiKey()) {
+          alert('请先在页面上方输入并保存 API Key');
+          loadingOverlay.classList.remove('active');
+          resultPlaceholder.style.display = 'block';
+          return;
         }
 
-        const data = await response.json();
+        const userPrompt = `请批改以下高考作文：
 
-        if (data.success && data.data) {
-          displayResult(data.data);
-        } else {
-          throw new Error(data.error || '批改失败');
+作文标题：${title || '（未提供）'}
+作文类型：${category || '议论文'}
+${topic ? `作文题目/材料：${topic}` : ''}
+
+作文内容：
+${content}
+
+请按照高考评分标准进行批改，并以JSON格式返回结果。`;
+
+        const result = await callAI([
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: userPrompt }
+        ]);
+
+        let parsedResult;
+        try {
+          const cleaned = result.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
+          parsedResult = JSON.parse(cleaned);
+        } catch (parseError) {
+          const jsonMatch = result.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedResult = JSON.parse(jsonMatch[0]);
+          } else {
+            throw new Error('AI返回格式异常，请重试');
+          }
         }
+
+        if (!parsedResult.totalMax) parsedResult.totalMax = 60;
+        displayResult(parsedResult);
       } catch (error) {
         console.warn('API调用失败，使用本地模拟:', error.message);
         // 降级：使用本地模拟
@@ -707,6 +803,7 @@ function renderHistory() {
 // ===== 页面初始化 =====
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
+  initApiKeyManager();
   initCharCount();
   initImageUpload();
   initGradingForm();
