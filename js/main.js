@@ -276,9 +276,10 @@ function initCharCount() {
 const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1';
 const SILICONFLOW_MODEL = 'Qwen/Qwen2.5-7B-Instruct';
 const SILICONFLOW_VISION_MODEL = 'Qwen/Qwen2.5-VL-7B-Instruct';
+const DEFAULT_API_KEY = 'sk-tsuxqnmffvzyahhdmmvdvzaxpluvlmgcherorbsvmiabonsl';
 
 function getApiKey() {
-  return localStorage.getItem('siliconflow_api_key') || '';
+  return localStorage.getItem('siliconflow_api_key') || DEFAULT_API_KEY;
 }
 
 function initApiKeyManager() {
