@@ -12,6 +12,7 @@
   },
   "rewrites": [
     { "source": "/api/grade", "destination": "/api/grade.js" },
+    { "source": "/api/ocr", "destination": "/api/ocr.js" },
     { "source": "/api/health", "destination": "/api/health.js" }
   ]
 }

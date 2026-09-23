@@ -74,7 +74,31 @@
 
             <div class="form-group">
               <label for="essayContent">作文内容<span class="required">*</span></label>
-              <textarea id="essayContent" class="form-textarea" placeholder="请在此粘贴或输入你的作文内容...&#10;&#10;建议字数：800-1000字（高考标准）"></textarea>
+
+              <!-- 图片上传区域 -->
+              <div class="image-upload-area" id="imageUploadArea">
+                <div class="upload-btn-wrapper">
+                  <button type="button" class="btn btn-outline upload-btn" id="uploadBtn">
+                    📷 拍照/上传图片
+                  </button>
+                  <input type="file" id="imageInput" accept="image/*" style="display:none;">
+                </div>
+                <span class="upload-hint">支持手写作文照片，AI自动识别转文字</span>
+              </div>
+
+              <!-- 图片预览 -->
+              <div class="image-preview" id="imagePreview" style="display:none;">
+                <img id="previewImg" src="" alt="预览" style="max-width:100%;max-height:200px;border-radius:8px;margin-bottom:8px;">
+                <button type="button" class="btn btn-outline btn-sm" id="removeImageBtn">✕ 移除图片</button>
+              </div>
+
+              <!-- OCR加载状态 -->
+              <div class="ocr-loading" id="ocrLoading" style="display:none;">
+                <div class="loading-spinner-small"></div>
+                <span>AI正在识别图片中的文字...</span>
+              </div>
+
+              <textarea id="essayContent" class="form-textarea" placeholder="请在此粘贴或输入你的作文内容...&#10;&#10;也可以上传手写作文照片，AI会自动识别转文字&#10;建议字数：800-1000字（高考标准）"></textarea>
               <div class="char-count" id="charCount">0 字</div>
             </div>
 

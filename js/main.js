@@ -272,6 +272,98 @@ function initCharCount() {
   }
 }
 
+// 图片上传 + OCR 识别
+function initImageUpload() {
+  const uploadBtn = document.getElementById('uploadBtn');
+  const imageInput = document.getElementById('imageInput');
+  const imagePreview = document.getElementById('imagePreview');
+  const previewImg = document.getElementById('previewImg');
+  const removeImageBtn = document.getElementById('removeImageBtn');
+  const ocrLoading = document.getElementById('ocrLoading');
+  const essayContent = document.getElementById('essayContent');
+  const charCount = document.getElementById('charCount');
+
+  if (!uploadBtn || !imageInput) return;
+
+  // 点击上传按钮 → 触发文件选择
+  uploadBtn.addEventListener('click', () => {
+    imageInput.click();
+  });
+
+  // 选择文件后
+  imageInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // 检查文件大小（限制 10MB）
+    if (file.size > 10 * 1024 * 1024) {
+      alert('图片太大，请选择 10MB 以内的图片');
+      imageInput.value = '';
+      return;
+    }
+
+    // 显示预览
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target.result;
+      previewImg.src = base64;
+      imagePreview.style.display = 'block';
+      ocrLoading.style.display = 'flex';
+
+      // 调用 OCR API
+      performOCR(base64);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // 移除图片
+  if (removeImageBtn) {
+    removeImageBtn.addEventListener('click', () => {
+      imagePreview.style.display = 'none';
+      previewImg.src = '';
+      imageInput.value = '';
+      ocrLoading.style.display = 'none';
+    });
+  }
+
+  // OCR 识别
+  async function performOCR(base64Image) {
+    try {
+      const response = await fetch('/api/ocr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64Image })
+      });
+
+      if (!response.ok) {
+        throw new Error(`识别失败: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success && data.text) {
+        // 将识别结果填入作文内容
+        essayContent.value = data.text;
+        // 触发字数统计更新
+        const count = essayContent.value.length;
+        charCount.textContent = `${count} 字`;
+        if (count < 800) {
+          charCount.classList.add('warning');
+        } else {
+          charCount.classList.remove('warning');
+        }
+        ocrLoading.style.display = 'none';
+      } else {
+        throw new Error(data.error || '识别失败');
+      }
+    } catch (error) {
+      console.error('OCR失败:', error.message);
+      ocrLoading.style.display = 'none';
+      alert('图片识别失败：' + error.message + '\n请手动输入作文内容');
+    }
+  }
+}
+
 // 作文批改
 function initGradingForm() {
   const form = document.getElementById('gradingForm');
@@ -616,6 +708,7 @@ function renderHistory() {
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initCharCount();
+  initImageUpload();
   initGradingForm();
   initEssayLibrary();
   initModal();
