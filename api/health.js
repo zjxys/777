@@ -5,6 +5,6 @@ export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.status(200).json({
     status: 'ok',
-    hasApiKey: !!process.env.SILICONFLOW_API_KEY && process.env.SILICONFLOW_API_KEY !== 'your_api_key_here'
+    hasApiKey: !!process.env.DEEPSEEK_API_KEY && process.env.DEEPSEEK_API_KEY !== 'your_api_key_here'
   });
 }

@@ -1,15 +1,15 @@
 // Vercel Serverless Function - 作文批改接口
 // 对应路径：/api/grade
-// 使用硅基流动 SiliconFlow API（兼容 OpenAI 格式）
+// 使用 DeepSeek API
 
-// ===== 硅基流动 API 调用 =====
-async function callSiliconFlowAPI(messages) {
-  const apiKey = process.env.SILICONFLOW_API_KEY;
-  const model = process.env.SILICONFLOW_MODEL || 'Qwen/Qwen2.5-7B-Instruct';
-  const baseUrl = process.env.SILICONFLOW_BASE_URL || 'https://api.siliconflow.cn/v1';
+// ===== DeepSeek API 调用 =====
+async function callDeepSeekAPI(messages) {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const model = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
+  const baseUrl = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com';
 
   if (!apiKey || apiKey === 'your_api_key_here') {
-    throw new Error('请先配置 SILICONFLOW_API_KEY 环境变量');
+    throw new Error('请先配置 DEEPSEEK_API_KEY 环境变量');
   }
 
   const response = await fetch(`${baseUrl}/chat/completions`, {
@@ -72,7 +72,6 @@ const SYSTEM_PROMPT = `你是一位资深的高考语文阅卷老师，有着丰
 
 // ===== Vercel Serverless Handler =====
 export default async function handler(req, res) {
-  // CORS 支持
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -103,12 +102,11 @@ ${content}
 
 请按照高考评分标准进行批改，并以JSON格式返回结果。`;
 
-    const result = await callSiliconFlowAPI([
+    const result = await callDeepSeekAPI([
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: userPrompt }
     ]);
 
-    // 尝试解析JSON
     let parsedResult;
     try {
       const cleaned = result.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
