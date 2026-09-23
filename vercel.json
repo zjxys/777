@@ -4,6 +4,12 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
   "rewrites": [
     { "source": "/api/grade", "destination": "/api/grade.js" },
     { "source": "/api/health", "destination": "/api/health.js" }

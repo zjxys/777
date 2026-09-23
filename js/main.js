@@ -309,6 +309,11 @@ function initGradingForm() {
           body: JSON.stringify({ title, content, topic, category })
         });
 
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`服务器返回 ${response.status}: ${errText.substring(0, 200)}`);
+        }
+
         const data = await response.json();
 
         if (data.success && data.data) {
@@ -320,7 +325,7 @@ function initGradingForm() {
         console.warn('API调用失败，使用本地模拟:', error.message);
         // 降级：使用本地模拟
         if (loadingText) loadingText.textContent = '使用本地模拟批改...';
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 1500));
         const result = generateMockResult(title, content);
         displayResult(result);
       } finally {

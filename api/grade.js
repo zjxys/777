@@ -130,6 +130,11 @@ ${content}
       }
     }
 
+    // 确保 totalMax 字段存在
+    if (!parsedResult.totalMax) {
+      parsedResult.totalMax = 60;
+    }
+
     res.status(200).json({ success: true, data: parsedResult });
   } catch (error) {
     console.error('批改失败:', error.message);

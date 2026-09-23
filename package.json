@@ -2,6 +2,7 @@
   "name": "biyun-essay-grading",
   "version": "1.0.0",
   "description": "笔韵 - AI高考语文作文批改平台",
+  "type": "module",
   "scripts": {
     "start": "node server/server.js",
     "dev": "node server/server.js"
