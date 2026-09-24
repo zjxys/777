@@ -276,7 +276,7 @@ function initCharCount() {
 const DASHSCOPE_BASE_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1';
 const DASHSCOPE_MODEL = 'qwen-turbo';
 const DASHSCOPE_VISION_MODEL = 'qwen-vl-plus';
-const DEFAULT_API_KEY = '';
+const DEFAULT_API_KEY = 'sk-ws-H.PLHXLLP.uPRi.MEYCIQDUCqegDkYEva4KIiqq_7gVzixswsP6sLarxruq5hqD7wIhAMmOyHNTxWe4Sr9f0D67QPZ4iHIcRG6YmlQSbrOTj8b6';
 
 function getApiKey() {
   return localStorage.getItem('dashscope_api_key') || DEFAULT_API_KEY;
