@@ -412,25 +412,51 @@ function initImageUpload() {
 }
 
 // 作文批改系统提示词
-const SYSTEM_PROMPT = `你是一位资深的高考语文阅卷老师，有着丰富的作文批改经验。
-请严格按照高考作文评分标准（满分60分）对用户提交的作文进行批改。
+const SYSTEM_PROMPT = `你是一位资深的高考语文阅卷老师，有着20年以上的作文批改经验，曾参与过省级高考阅卷工作。
+请严格按照高考作文评分标准（满分60分）对用户提交的作文进行详尽批改。
 
 评分维度（共60分）：
-1. 内容等级（20分）：审题立意、中心思想、内容充实、感情真挚
-2. 表达等级（20分）：文体规范、结构严谨、语言流畅、书写工整
-3. 发展等级（20分）：深刻、丰富、有文采、有创意
+
+1. 内容等级（20分）：
+   - 审题立意（8分）：是否准确把握题意，立意是否深刻、新颖
+   - 中心思想（4分）：中心是否明确、突出
+   - 内容充实（4分）：论据是否充分、典型，材料是否丰富
+   - 感情真挚（4分）：是否有真情实感，是否健康向上
+
+2. 表达等级（20分）：
+   - 文体规范（4分）：是否符合所选文体要求
+   - 结构严谨（6分）：层次是否清晰，开头结尾是否照应，过渡是否自然
+   - 语言流畅（6分）：语句是否通顺，有无语病，用词是否准确
+   - 书写规范（4分）：有无错别字，标点是否正确
+
+3. 发展等级（20分）：
+   - 深刻（5分）：透过现象看本质，观点是否有启发性
+   - 丰富（5分）：材料丰富，论据充实，意象丰满
+   - 有文采（5分）：用词贴切，句式灵活，善用修辞，文句有表现力
+   - 有创意（5分）：见解新颖，材料新鲜，构思精巧，推理想象有独到之处
 
 请严格按照以下JSON格式返回结果，不要包含任何额外文字：
 {
   "totalScore": 总分,
   "level": "一类文/二类上/二类下/三类文/四类文",
   "dimensions": {
-    "content": { "score": 内容分, "max": 20, "label": "内容" },
-    "expression": { "score": 表达分, "max": 20, "label": "表达" },
-    "development": { "score": 发展等级分, "max": 20, "label": "发展等级" }
+    "content": { "score": 内容分, "max": 20, "label": "内容", "detail": "对内容维度的详细点评（100-150字），指出具体优点和不足" },
+    "expression": { "score": 表达分, "max": 20, "label": "表达", "detail": "对表达维度的详细点评（100-150字），指出具体优点和不足" },
+    "development": { "score": 发展等级分, "max": 20, "label": "发展等级", "detail": "对发展等级的详细点评（100-150字），指出具体优点和不足" }
   },
-  "comment": "总评（150字左右）",
-  "suggestions": ["建议1", "建议2", "建议3"]
+  "comment": "总评（200-300字），从整体角度评价文章的优缺点，给出总体印象和方向性指导",
+  "suggestions": [
+    "建议1：要具体、可操作，指出具体问题和改进方法（50-80字）",
+    "建议2：要具体、可操作，指出具体问题和改进方法（50-80字）",
+    "建议3：要具体、可操作，指出具体问题和改进方法（50-80字）",
+    "建议4：要具体、可操作，指出具体问题和改进方法（50-80字）",
+    "建议5：要具体、可操作，指出具体问题和改进方法（50-80字）"
+  ],
+  "issues": [
+    { "type": "语病/错别字/标点/逻辑/论据", "location": "原文中的具体句子或段落位置", "description": "问题描述", "fix": "修改建议" },
+    { "type": "...", "location": "...", "description": "...", "fix": "..." }
+  ],
+  "highlights": ["文章的亮点1（引用原文具体句子并点评）", "文章的亮点2", "文章的亮点3"]
 }
 
 评分参考：
@@ -439,6 +465,13 @@ const SYSTEM_PROMPT = `你是一位资深的高考语文阅卷老师，有着丰
 - 二类下（40-45分）：基本符合题意，中心基本明确
 - 三类文（34-39分）：偏离题意，中心不明确
 - 四类文（33分以下）：完全跑题
+
+批改要求：
+1. 必须仔细阅读全文，逐段分析
+2. issues数组要找出3-8个具体问题，包括语病、错别字、标点错误、逻辑漏洞、论据不当等
+3. highlights要找出2-4个文章亮点，引用原文具体语句
+4. suggestions要给出5条具体可操作的建议，每条都要有具体的改进方法
+5. 每个维度的detail要具体分析，不要泛泛而谈
 
 请务必返回合法的JSON格式。`;
 
@@ -569,12 +602,16 @@ function generateMockResult(title, content) {
     totalMax: 60,
     level,
     dimensions: {
-      content: { score: contentScore, max: 20, label: '内容' },
-      expression: { score: expressionScore, max: 20, label: '表达' },
-      development: { score: developmentScore, max: 20, label: '发展等级' }
+      content: { score: contentScore, max: 20, label: '内容', detail: '审题立意基本准确，中心思想较为明确。论据方面稍显不足，建议增加典型素材的引用。感情表达较为真挚，但部分段落略显空泛。' },
+      expression: { score: expressionScore, max: 20, label: '表达', detail: '文体规范，结构较为完整，开头结尾有一定照应。语言基本通顺，但部分语句存在语病。过渡方面需加强，段落间逻辑衔接不够自然。' },
+      development: { score: developmentScore, max: 20, label: '发展等级', detail: '论证深度有待提升，透过现象看本质的能力还需加强。材料较为单一，文采方面表现一般，修辞手法使用较少。' }
     },
     comment: comments[Math.floor(Math.random() * comments.length)],
-    suggestions: suggestions.sort(() => Math.random() - 0.5).slice(0, 3)
+    suggestions: suggestions.sort(() => Math.random() - 0.5).slice(0, 3),
+    issues: [
+      { type: '语病', location: '第二段', description: '"通过...使我们认识到"句式杂糅', fix: '改为"通过...我们认识到"或"...使我们认识到"' }
+    ],
+    highlights: ['文章开头引用名言，起到了较好的引入作用']
   };
 }
 
@@ -588,7 +625,7 @@ function displayResult(result) {
   document.getElementById('totalMax').textContent = result.totalMax;
   document.getElementById('scoreLevel').textContent = result.level;
 
-  // 更新各维度分数
+  // 更新各维度分数 + 详细点评
   const dimScores = document.querySelectorAll('.dim-score-item');
   const dims = Object.values(result.dimensions);
   dimScores.forEach((el, i) => {
@@ -598,6 +635,15 @@ function displayResult(result) {
       if (bar) {
         bar.style.width = `${(dims[i].score / dims[i].max) * 100}%`;
       }
+      // 添加详细点评
+      let detailEl = el.querySelector('.dim-detail');
+      if (!detailEl) {
+        detailEl = document.createElement('div');
+        detailEl.className = 'dim-detail';
+        detailEl.style.cssText = 'font-size:13px;color:var(--text-muted);margin-top:6px;line-height:1.6;padding:8px 12px;background:#f8f6f0;border-radius:6px;border-left:3px solid var(--primary);';
+        el.appendChild(detailEl);
+      }
+      detailEl.textContent = dims[i].detail || '';
     }
   });
 
@@ -612,6 +658,44 @@ function displayResult(result) {
       <span>${s}</span>
     </li>
   `).join('');
+
+  // 更新问题标注
+  const issuesContainer = document.getElementById('issuesContainer');
+  if (issuesContainer) {
+    if (result.issues && result.issues.length > 0) {
+      issuesContainer.style.display = 'block';
+      const issuesList = document.getElementById('issuesList');
+      issuesList.innerHTML = result.issues.map(issue => `
+        <div class="issue-item">
+          <div class="issue-header">
+            <span class="issue-type">${issue.type}</span>
+            <span class="issue-location">${issue.location}</span>
+          </div>
+          <div class="issue-desc">${issue.description}</div>
+          ${issue.fix ? `<div class="issue-fix">💡 修改建议：${issue.fix}</div>` : ''}
+        </div>
+      `).join('');
+    } else {
+      issuesContainer.style.display = 'none';
+    }
+  }
+
+  // 更新亮点
+  const highlightsContainer = document.getElementById('highlightsContainer');
+  if (highlightsContainer) {
+    if (result.highlights && result.highlights.length > 0) {
+      highlightsContainer.style.display = 'block';
+      const highlightsList = document.getElementById('highlightsList');
+      highlightsList.innerHTML = result.highlights.map(h => `
+        <div class="highlight-item">
+          <span class="highlight-icon">⭐</span>
+          <span>${h}</span>
+        </div>
+      `).join('');
+    } else {
+      highlightsContainer.style.display = 'none';
+    }
+  }
 }
 
 // 范文库功能
