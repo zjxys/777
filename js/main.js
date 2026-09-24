@@ -273,13 +273,13 @@ function initCharCount() {
 }
 
 // ===== API Key 管理 =====
-const SILICONFLOW_BASE_URL = 'https://api.siliconflow.cn/v1';
-const SILICONFLOW_MODEL = 'Qwen/Qwen2.5-7B-Instruct';
-const SILICONFLOW_VISION_MODEL = 'Qwen/Qwen2.5-VL-7B-Instruct';
-const DEFAULT_API_KEY = 'sk-tsuxqnmffvzyahhdmmvdvzaxpluvlmgcherorbsvmiabonsl';
+const DASHSCOPE_BASE_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+const DASHSCOPE_MODEL = 'qwen-turbo';
+const DASHSCOPE_VISION_MODEL = 'qwen-vl-plus';
+const DEFAULT_API_KEY = '';
 
 function getApiKey() {
-  return localStorage.getItem('siliconflow_api_key') || DEFAULT_API_KEY;
+  return localStorage.getItem('dashscope_api_key') || DEFAULT_API_KEY;
 }
 
 function initApiKeyManager() {
@@ -299,32 +299,32 @@ function initApiKeyManager() {
   saveBtn.addEventListener('click', () => {
     const key = apiKeyInput.value.trim();
     if (!key) {
-      localStorage.removeItem('siliconflow_api_key');
+      localStorage.removeItem('dashscope_api_key');
       statusEl.textContent = '未配置';
       statusEl.style.color = '';
       return;
     }
-    localStorage.setItem('siliconflow_api_key', key);
+    localStorage.setItem('dashscope_api_key', key);
     statusEl.textContent = '✓ 已保存';
     statusEl.style.color = 'green';
   });
 }
 
-// ===== 前端直接调用硅基流动 API =====
+// ===== 前端直接调用阿里云通义千问 API =====
 async function callAI(messages, isVision = false) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    throw new Error('请先在页面上方输入并保存 API Key');
+    throw new Error('请先在页面上方输入并保存阿里云 API Key');
   }
 
-  const response = await fetch(`${SILICONFLOW_BASE_URL}/chat/completions`, {
+  const response = await fetch(`${DASHSCOPE_BASE_URL}/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      model: isVision ? SILICONFLOW_VISION_MODEL : SILICONFLOW_MODEL,
+      model: isVision ? DASHSCOPE_VISION_MODEL : DASHSCOPE_MODEL,
       messages: messages,
       temperature: isVision ? 0.1 : 0.7,
       max_tokens: isVision ? 3000 : 2000
